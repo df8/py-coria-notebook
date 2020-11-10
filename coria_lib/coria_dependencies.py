@@ -20,236 +20,185 @@ from coria_lib.coria_shortest_path import shortest_path_length
 CORIA_METRIC_TREE = {
     'node-degree': {
         'node-degree-default': {
-            'dependencies': [],
-            'implementations': {
-                'cpu': node_degree,
-                'gpu': node_degree
-            }
+            'cpu': node_degree,
+            'gpu': node_degree
         },
         'node-degree-normalized': {
-            'dependencies': ['node-degree-default'],
-            'implementations': {
-                'cpu': normalise_min_max,
-                'gpu': normalise_min_max
-            }
+            'cpu': normalise_min_max,
+            'gpu': normalise_min_max
         }
     },
     'shortest-path-lengths': {
         'shortest-path-lengths-default': {
-            'dependencies': [],
-            'implementations': {
-                'cpu': shortest_path_length,
-                'gpu': shortest_path_length
-            }
+            'cpu': shortest_path_length,
+            'gpu': shortest_path_length
         }
     },
     'average-shortest-path-length': {
         'average-shortest-path-length-default': {
-            'dependencies': ['shortest-path-lengths-default'],
-            'implementations': {
-                'cpu': average_shortest_path_length,
-                'gpu': average_shortest_path_length
-            }
+            'cpu': average_shortest_path_length,
+            'gpu': average_shortest_path_length
         },
         'average-shortest-path-length-normalized': {
-            'dependencies': ['average-shortest-path-length-default'],
-            'implementations': {
-                'cpu': normalise_max_min,
-                'gpu': normalise_max_min
-            }
+            'cpu': normalise_max_min,
+            'gpu': normalise_max_min
         }
     },
     'eccentricity': {
         'eccentricity-default': {
-            'dependencies': ['shortest-path-lengths-default'],
-            'implementations': {
-                'cpu': eccentricity,
-                'gpu': eccentricity
-            }
+            'cpu': eccentricity,
+            'gpu': eccentricity
+
         },
         'eccentricity-normalized': {
-            'dependencies': ['eccentricity-default'],
-            'implementations': {
-                'cpu': normalise_max_min,
-                'gpu': normalise_max_min
-            }
+            'cpu': normalise_max_min,
+            'gpu': normalise_max_min
         }
     },
-
     'betweenness-centrality': {
         'betweenness-centrality-default': {
-            'dependencies': [],
-            'implementations': {
-                'cpu': betweenness_centrality,
-                'gpu': betweenness_centrality
-            }
+            'cpu': betweenness_centrality,
+            'gpu': betweenness_centrality
         },
         'betweenness-centrality-normalized': {
-            'dependencies': ['betweenness-centrality-default'],
-            'implementations': {
-                'cpu': normalise_min_max,
-                'gpu': normalise_min_max
-            }
+            'cpu': normalise_min_max,
+            'gpu': normalise_min_max
         }
     },
     'average-neighbour-degree': {
         'average-neighbour-degree-default': {
-            'dependencies': [],
-            'implementations': {
-                'cpu': average_neighbour_degree_default,
-                'gpu': average_neighbour_degree_default
-            }
+            'cpu': average_neighbour_degree_default,
+            'gpu': average_neighbour_degree_default
         },
         'average-neighbour-degree-corrected': {
-            'dependencies': [],
-            'implementations': {
-                'cpu': average_neighbour_degree_corrected,
-                'gpu': average_neighbour_degree_corrected
-            }
+            'cpu': average_neighbour_degree_corrected,
+            'gpu': average_neighbour_degree_corrected
+
         },
         'average-neighbour-degree-corrected-and-normalized': {
-            'dependencies': ['average-neighbour-degree-corrected'],
-            'implementations': {
-                'cpu': normalise_min_max,
-                'gpu': normalise_min_max
-            }
+            'cpu': normalise_min_max,
+            'gpu': normalise_min_max
         }
     },
     'iterated-average-neighbour-degree': {
         'iterated-average-neighbour-degree-default': {
-            'dependencies': ['shortest-path-lengths-default'],
-            'implementations': {
-                'cpu': iterated_average_neighbour_degree_default,
-                'gpu': iterated_average_neighbour_degree_default
-            }
-        },
+            'cpu': iterated_average_neighbour_degree_default,
+            'gpu': iterated_average_neighbour_degree_default
+        }
+        ,
         'iterated-average-neighbour-degree-corrected': {
-            'dependencies': ['shortest-path-lengths-default'],
-            'implementations': {
-                'cpu': iterated_average_neighbour_degree_corrected,
-                'gpu': iterated_average_neighbour_degree_corrected
-            }
+            'cpu': iterated_average_neighbour_degree_corrected,
+            'gpu': iterated_average_neighbour_degree_corrected
         },
         'iterated-average-neighbour-degree-corrected-and-normalized': {
-            'dependencies': ['iterated-average-neighbour-degree-corrected'],
-            'implementations': {
-                'cpu': normalise_min_max,
-                'gpu': normalise_min_max
-            }
+            'cpu': normalise_min_max,
+            'gpu': normalise_min_max
         }
     },
     'local-clustering-coefficients': {
         'local-clustering-coefficients-default': {
-            'dependencies': [],
-            'implementations': {
-                'cpu': local_clustering_coefficient_default,
-                'gpu': local_clustering_coefficient_default
-            }
+            'cpu': local_clustering_coefficient_default,
+            'gpu': local_clustering_coefficient_default
         },
         'local-clustering-coefficients-corrected': {
-            'dependencies': ['local-clustering-coefficients-default'],
-            'implementations': {
-                'cpu': local_clustering_coefficient_corrected,
-                'gpu': local_clustering_coefficient_corrected
-            }
+            'cpu': local_clustering_coefficient_corrected,
+            'gpu': local_clustering_coefficient_corrected
         },
         'local-clustering-coefficients-corrected-and-normalized': {
-            'dependencies': ['local-clustering-coefficients-corrected'],
-            'implementations': {
-                'cpu': normalise_min_max,
-                'gpu': normalise_min_max
-            }
+            'cpu': normalise_min_max,
+            'gpu': normalise_min_max
         }
     },
     'unified-risk-score': {
         'unified-risk-score-default': {
-            'dependencies': [
-                'node-degree-normalized',
-                'average-neighbour-degree-corrected-and-normalized',
-                'iterated-average-neighbour-degree-corrected-and-normalized',
-                'betweenness-centrality-normalized',
-                'eccentricity-normalized',
-                'average-shortest-path-length-normalized'
-            ],
-            'implementations': {
-                'cpu': unified_risk_score,
-                'gpu': unified_risk_score
-            }
+            'cpu': unified_risk_score,
+            'gpu': unified_risk_score
         }
     },
     'connectivity-risk-classification': {
         'connectivity-risk-classification-default': {
-            'dependencies': ['unified-risk-score-default'],
-            'implementations': {
-                'cpu': connectivity_risk_classification,
-                'gpu': connectivity_risk_classification
-            }
+            'cpu': connectivity_risk_classification,
+            'gpu': connectivity_risk_classification
         }
     },
     'average-node-degree': {
         'average-node-degree-default': {
-            'dependencies': [],
-            'implementations': {
-                'cpu': average_node_degree,
-                'gpu': average_node_degree
-            }
+            'cpu': average_node_degree,
+            'gpu': average_node_degree
         }
     },
     'graph-diameter': {
         'graph-diameter-default': {
-            'dependencies': [],
-            'implementations': {
-                'cpu': graph_diameter
-            }
+            'cpu': graph_diameter
         }
     },
     'layout-position-circular': {
         'layout-position-circular-default': {
-            'dependencies': [],
-            'implementations': {
-                'cpu': circular_layout
-            }
+            'cpu': circular_layout
         }
     },
     'layout-position-spring': {
         'layout-position-spring-default': {
-            'dependencies': [],
-            'implementations': {
-                'cpu': spring_layout
-            }
+            'cpu': spring_layout
         }
     },
     'layout-position-spectral': {
         'layout-position-spectral-default': {
-            'dependencies': [],
-            'implementations': {
-                'cpu': spectral_layout
-            }
+            'cpu': spectral_layout
         }
     },
     'layout-position-random': {
         'layout-position-random-default': {
-            'dependencies': [],
-            'implementations': {
-                'cpu': random_layout
-            }
+            'cpu': random_layout
         }
     },
     'layout-position-shell': {
         'layout-position-shell-default': {
-            'dependencies': [],
-            'implementations': {
-                'cpu': shell_layout
-            }
+            'cpu': shell_layout
         }
     },
     'edge-betweenness-centrality': {
         'edge-betweenness-centrality-default': {
-            'dependencies': [],
-            'implementations': {
-                'cpu': edge_betweenness_centrality,
-                'gpu': edge_betweenness_centrality
-            }
+            'cpu': edge_betweenness_centrality,
+            'gpu': edge_betweenness_centrality
         }
     }
+}
+
+CORIA_METRIC_DEPENDENCIES = {
+    'node-degree-default': [],
+    'node-degree-normalized': ['node-degree-default'],
+    'shortest-path-lengths-default': [],
+    'average-shortest-path-length-default': ['shortest-path-lengths-default'],
+    'average-shortest-path-length-normalized': ['average-shortest-path-length-default'],
+    'eccentricity-default': ['shortest-path-lengths-default'],
+    'eccentricity-normalized': ['eccentricity-default'],
+    'betweenness-centrality-default': [],
+    'betweenness-centrality-normalized': ['betweenness-centrality-default'],
+    'average-neighbour-degree-default': ['node-degree-default'],
+    'average-neighbour-degree-corrected': ['node-degree-default'],
+    'average-neighbour-degree-corrected-and-normalized': ['average-neighbour-degree-corrected'],
+    'iterated-average-neighbour-degree-default': ['node-degree-default', 'shortest-path-lengths-default'],
+    'iterated-average-neighbour-degree-corrected': ['node-degree-default', 'shortest-path-lengths-default'],
+    'iterated-average-neighbour-degree-corrected-and-normalized': ['iterated-average-neighbour-degree-corrected'],
+    'local-clustering-coefficients-default': [],
+    'local-clustering-coefficients-corrected': ['local-clustering-coefficients-default'],
+    'local-clustering-coefficients-corrected-and-normalized': ['local-clustering-coefficients-corrected'],
+    'unified-risk-score-default': [
+        'node-degree-normalized',
+        'average-neighbour-degree-corrected-and-normalized',
+        'iterated-average-neighbour-degree-corrected-and-normalized',
+        'betweenness-centrality-normalized',
+        'eccentricity-normalized',
+        'average-shortest-path-length-normalized'
+    ],
+    'connectivity-risk-classification-default': ['unified-risk-score-default'],
+    'average-node-degree-default': [],
+    'graph-diameter-default': [],
+    'layout-position-circular-default': [],
+    'layout-position-spring-default': [],
+    'layout-position-spectral-default': [],
+    'layout-position-random-default': [],
+    'layout-position-shell-default': [],
+    'edge-betweenness-centrality-default': [],
 }

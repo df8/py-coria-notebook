@@ -12,7 +12,7 @@ if __name__ == "__main__":
     # CORIA components
     coria_imports()
 
-    from coria_lib.coria_dependencies import CORIA_METRIC_TREE
+    from coria_lib.coria_dependencies import CORIA_METRIC_TREE, CORIA_METRIC_DEPENDENCIES
     from coria_lib.coria_helper_functions import log
     from coria_lib.coria_parse_args import parse_input_args
     from coria_lib.coria_results import set_input_dataframe_dict
@@ -41,12 +41,10 @@ Checks all metrics in the computation queue that depend on shortest-path-lengths
         _spl_dependent_metrics = []
         for _metric_id in options.metric:
             _metric_keys = parse_coria_metric_id(_metric_id)
-            if _metric_keys['metric_algorithm'] in CORIA_METRIC_TREE and \
-                    _metric_keys['metric_variant'] in CORIA_METRIC_TREE[_metric_keys['metric_algorithm']] and \
-                    'shortest-path-lengths-default' in CORIA_METRIC_TREE[_metric_keys['metric_algorithm']][_metric_keys['metric_variant']]['dependencies']:
+            if _metric_keys['metric_variant'] in CORIA_METRIC_DEPENDENCIES and \
+                    'shortest-path-lengths-default' in CORIA_METRIC_DEPENDENCIES[_metric_keys['metric_variant']]:
                 _spl_dependent_metrics.append(_metric_keys['metric_variant'])
         return _spl_dependent_metrics
-
 
     for metric_id in options.metric:
         metric_keys = parse_coria_metric_id(metric_id)
@@ -59,10 +57,10 @@ Checks all metrics in the computation queue that depend on shortest-path-lengths
             tstamp_start = time_ns()
             if metric_keys['metric_algorithm'] in CORIA_METRIC_TREE and \
                     metric_keys['metric_variant'] in CORIA_METRIC_TREE[metric_keys['metric_algorithm']] and \
-                    metric_keys['architecture'] in CORIA_METRIC_TREE[metric_keys['metric_algorithm']][metric_keys['metric_variant']]['implementations']:
+                    metric_keys['architecture'] in CORIA_METRIC_TREE[metric_keys['metric_algorithm']][metric_keys['metric_variant']]:
 
                 # CORIA_METRIC_TREE is essentially a dict with function references at its leaves, therefore we can call the function using its reference
-                metric_function = CORIA_METRIC_TREE[metric_keys['metric_algorithm']][metric_keys['metric_variant']]['implementations'][metric_keys['architecture']]
+                metric_function = CORIA_METRIC_TREE[metric_keys['metric_algorithm']][metric_keys['metric_variant']][metric_keys['architecture']]
 
                 if metric_keys['metric_algorithm'] == "shortest-path-lengths":
                     # Compute only the metrics that were requested through command line parameters to save some execution time.
@@ -70,7 +68,7 @@ Checks all metrics in the computation queue that depend on shortest-path-lengths
                     metric_function(input_dataframe_dict, metric_keys['metric_variant'], spl_table_requested_for_export, get_spl_dependent_metrics())
 
                 else:
-                    metric_function = CORIA_METRIC_TREE[metric_keys['metric_algorithm']][metric_keys['metric_variant']]['implementations'][metric_keys['architecture']]
+                    metric_function = CORIA_METRIC_TREE[metric_keys['metric_algorithm']][metric_keys['metric_variant']][metric_keys['architecture']]
                     metric_function(input_dataframe_dict, metric_keys['metric_variant'])
 
             else:
