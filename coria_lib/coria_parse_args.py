@@ -1,3 +1,5 @@
+# Created by David Fradin, 2020
+
 import argparse
 import os
 
@@ -98,3 +100,13 @@ def get_metric_parameters(metric_variant_id):
         return metric_parameters_dict[metric_variant_id]
     else:
         return {}
+
+
+def set_metric_parameters(metric_variant_id, key, value):
+    global metric_parameters_dict
+    if not metric_parameters_dict:
+        metric_parameters_dict = {}
+    if metric_variant_id not in metric_parameters_dict:
+        metric_parameters_dict[metric_variant_id] = {}
+    if key not in metric_parameters_dict[metric_variant_id]:
+        metric_parameters_dict[metric_variant_id][key] = value

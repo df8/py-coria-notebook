@@ -1,3 +1,5 @@
+# Created by David Fradin, 2020
+
 USE_CUDA = False
 pd = None
 cugraph = None
