@@ -1,3 +1,5 @@
+# Created by David Fradin, 2020
+
 from time import gmtime, strftime
 
 
@@ -37,4 +39,4 @@ def transform_networkx_result(results_temp, metric_variant_id):
     results_temp = pd.DataFrame.from_dict(results_temp, orient='index', columns=[metric_variant_id]).reset_index()
     results_temp.columns = ['node_source', metric_variant_id]
     results_temp['node_source'] = results_temp['node_source'].astype('int64')
-    return results_temp    
+    return results_temp

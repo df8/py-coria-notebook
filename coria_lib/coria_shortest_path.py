@@ -1,12 +1,14 @@
+# Created by David Fradin, 2020
+
 from coria_lib.coria_config import pd, USE_CUDA
 from coria_lib.coria_results import append_result_nmr, metric_execution_timestamps
 
 
 def shortest_path_length(input_dataframe_dict, metric_variant_id, spl_table_requested_for_export, spl_dependent_metrics):
-    ecc_requested = 'eccentricity-default' in spl_dependent_metrics
-    aspl_requested = 'average-shortest-path-length-default' in spl_dependent_metrics
-    iandd_requested = 'iterated-average-neighbour-degree-default' in spl_dependent_metrics
-    iandc_requested = 'iterated-average-neighbour-degree-corrected' in spl_dependent_metrics
+    ecc_requested = 'eccentricity--default' in spl_dependent_metrics
+    aspl_requested = 'average-shortest-path-length--default' in spl_dependent_metrics
+    iandd_requested = 'iterated-average-neighbour-degree--default' in spl_dependent_metrics
+    iandc_requested = 'iterated-average-neighbour-degree--corrected' in spl_dependent_metrics
     results_spl = []
     results_nmr_from_spl = []  # this list collects up to 4 node metric results in tuples for each row.
 
@@ -17,7 +19,7 @@ def shortest_path_length(input_dataframe_dict, metric_variant_id, spl_table_requ
     node_degree_lookup = None
 
     if ecc_requested or aspl_requested or iandd_requested or iandc_requested:
-        node_degree_lookup = input_dataframe_dict['nmr-dependencies'][['node_source', 'node-degree-default']]
+        node_degree_lookup = input_dataframe_dict['nmr-dependencies'][['node_source', 'node-degree--default']]
 
     def _shortest_path_length_inner(_df1):
         if ecc_requested or aspl_requested or iandd_requested or iandc_requested:
@@ -43,7 +45,7 @@ def shortest_path_length(input_dataframe_dict, metric_variant_id, spl_table_requ
                         nmr_row_results.append(0)
                 else:
                     _results_temp = pd.merge(_results_temp, node_degree_lookup, how='inner', left_on='vertex', right_on='node_source', sort=False)
-                    ndeg_series = _results_temp['node-degree-default']
+                    ndeg_series = _results_temp['node-degree--default']
                     ndeg_mean = ndeg_series.mean()
                     if iandd_requested:
                         nmr_row_results.append(ndeg_mean)

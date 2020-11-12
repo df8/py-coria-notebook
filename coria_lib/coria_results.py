@@ -1,8 +1,8 @@
-import sys
+# Created by David Fradin, 2020
 
+import sys
 from coria_lib.coria_config import pd
 from coria_lib.coria_helper_functions import log
-from coria_lib.coria_parse_args import output_paths
 
 input_dataframe_dict = {}
 spl_to_dict = False
@@ -23,7 +23,7 @@ def append_result_nmr(df, metric_variant_id, replace=False):
     global input_dataframe_dict
     global result_column_keys_nmr
 
-    if replace or 'nmr-dependencies' not in input_dataframe_dict:
+    if replace or 'nmr-dependencies' not in input_dataframe_dict or input_dataframe_dict['nmr-dependencies'] is None:
         input_dataframe_dict['nmr-dependencies'] = df
     else:
         input_dataframe_dict['nmr-dependencies'] = pd.merge(input_dataframe_dict['nmr-dependencies'], df, how='left', left_on='node_source', right_on='node_source', sort=False)
@@ -37,6 +37,13 @@ def append_result_nmr(df, metric_variant_id, replace=False):
 def nmr_column_list_contains(metric_variant_id):
     global result_column_keys_nmr
     return metric_variant_id in result_column_keys_nmr
+
+
+def reset_results():
+    global result_column_keys_nmr
+    global input_dataframe_dict
+    input_dataframe_dict['nmr-dependencies'] = None
+    result_column_keys_nmr = ['node_source']
 
 
 def append_result_emr(df):
@@ -67,7 +74,9 @@ def append_result_dmr(df, replace=False):
         results_dmr = pd.merge(results_dmr, df, how='inner', left_index=True, right_index=True, sort=False)
 
 
-def write_output_to_files():
+def write_output_to_files(output_paths=None):
+    if output_paths is None:
+        from coria_lib.coria_parse_args import output_paths
     # Library-specific writers
     handled_export = False
     if 'shortest-path-lengths' in input_dataframe_dict and 'shortestpathlength' in output_paths and getattr(input_dataframe_dict['shortest-path-lengths'], "to_csv", None) is not None:
@@ -101,7 +110,7 @@ def write_output_to_files():
             if isinstance(results_temp, (str, float, int)):
                 outputFile.write(str(results_temp))
             elif isinstance(results_temp, dict):
-                # if spl_to_dict and metric_id.startswith("shortest-path-lengths-default--python3"):
+                # if spl_to_dict and metric_id.startswith("shortest-path-lengths--default--python3"):
                 #    import json
                 #    outputFile.write(json.dumps(results, separators=(',', ':')).replace('"', ''))
                 # else:
@@ -125,3 +134,4 @@ def write_output_to_files():
                 sys.exit('Unknown export type: ' + str(type(results_temp)))
 
     log("Finished writing to file and finished execution")
+

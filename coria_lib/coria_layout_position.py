@@ -1,3 +1,5 @@
+# Created by David Fradin, 2020
+
 from coria_lib.coria_config import nx, pd
 from coria_lib.coria_results import append_result_lp
 
